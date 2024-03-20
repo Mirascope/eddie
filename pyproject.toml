@@ -1,0 +1,81 @@
+[tool.poetry]
+name = "eddie"
+version = "0.0.0"
+description = "AI-powered CLI Assistant"
+license = "MIT"
+authors = ["William Bakst <william@mirascope.io>"]
+readme = "README.md"
+packages = [{ include = "eddie" }]
+repository = "https://github.com/Mirascope/eddie"
+
+[tool.poetry.scripts]
+eddie = 'eddie.main:app'
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+typer = { version = "^0.9.0", extras = ["all"] }
+mirascope = { version = "^0.6.2", extras = ["all"] }
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.6.1"
+pytest = "^7.4.0"
+ruff = "^0.1.5"
+pytest-asyncio = "^0.23.3"
+pytest-cov = "^4.1.0"
+
+[tool.poetry.group.docs.dependencies]
+mike = "^2.0.0"
+mkdocs = "^1.4.3"
+mkdocs-material = "^9.1.18"
+mkdocstrings = "^0.22.0"
+mkdocstrings-python = "^1.1.2"
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+ignore = []
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.mypy]
+exclude = ["venv", "virtualenvs"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
