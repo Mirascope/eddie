@@ -2,6 +2,7 @@
 from textwrap import dedent
 from typing import Optional
 
+import wandb
 from rich.console import Console
 from rich.live import Live
 from rich.markdown import Markdown
@@ -10,9 +11,14 @@ from typer import Typer
 
 from . import __version__
 from .calls import Chat
+from .config import Settings
 from .simple_code_block import SimpleCodeBlock
 
+settings = Settings()
 app = Typer()
+
+wandb.login(key=settings.wandb_api_key)
+wandb.init(project="eddie")
 
 
 Markdown.elements["fence"] = SimpleCodeBlock
@@ -52,22 +58,29 @@ def chat(base_url: Optional[str] = None, dirname: Optional[str] = None):
 
         chat.user_message = user_input
         chat.history.append({"role": "user", "content": user_input})
-        stream = chat.stream()
 
         interrupted, error = False, None
         console.print("\n[bold blue]Eddie:[/bold blue] ")
-        with Live("", refresh_per_second=1, console=console) as live:
-            try:
-                content = ""
-                for chunk in stream:
-                    content += chunk.content
-                    live.update(Markdown(content))
-                content += "\n"
-                live.update(Markdown(content))
-            except KeyboardInterrupt:
-                interrupted = True
-            except Exception as e:
-                error = e
+        # with Live("", refresh_per_second=1, console=console) as live:
+        #     try:
+        #         content = ""
+        #         for chunk in stream:
+        #             content += chunk.content
+        #             live.update(Markdown(content))
+        #         content += "\n"
+        #         live.update(Markdown(content))
+        #     except KeyboardInterrupt:
+        #         interrupted = True
+        #     except Exception as e:
+        #         error = e
+        try:
+            content = chat.call().content
+            response, span = chat.call_with_trace(..., ...)
+            console.print(Markdown(content))
+        except KeyboardInterrupt:
+            interrupted = True
+        except Exception as e:
+            error = e
 
         if interrupted:
             console.print("[dim]Interrupted[/dim]")

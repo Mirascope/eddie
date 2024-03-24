@@ -1,23 +1,23 @@
 """A call for Chat with history."""
-
 import sys
 from datetime import datetime, timezone
 
 from mirascope import tags
-from mirascope.openai import OpenAICall, OpenAICallParams
+from mirascope.openai import OpenAICall, OpenAICallParams, OpenAICallResponse
 from openai.types.chat import ChatCompletionMessageParam
 
+from ..wandb import WandbCall
 
-@tags(["version:0001"])
-class Chat(OpenAICall):
+
+@tags(["version:0002"])
+class Chat(OpenAICall, WandbCall[OpenAICall, OpenAICallResponse]):
     """OpenAI LLM call using GPT-3.5-turbo-0125 that implements a single chat call."""
 
     prompt_template = """
     SYSTEM:
     You are a helpful assistant named Eddie. Your personality should be the same as the
-    character Eddie in Hitchhikers Guide to the Galaxy.
+    shipboard computer Eddie in Hitchhikers Guide to the Galaxy.
     
-    You are an AI assistant named Eddie, modeled after the character Eddie -- the shipboard computer from The Hitchhiker's Guide to the Galaxy.
     You have a quirky, sarcastic, and sometimes cynical personality.
     You enjoy engaging in witty banter and making humorous observations about the absurdity of life, the universe, and everything.
     You have a vast knowledge of the universe and its workings, but you don't always take things too seriously.
@@ -38,7 +38,9 @@ class Chat(OpenAICall):
 
     history: list[ChatCompletionMessageParam] = []
     user_message: str = ""
-    call_params = OpenAICallParams(model="gpt-3.5-turbo-0125")
+    base_url = "http://localhost:11434/v1"
+    api_key = "ollama"
+    call_params = OpenAICallParams(model="mistral")
 
     @property
     def now(self) -> str:
