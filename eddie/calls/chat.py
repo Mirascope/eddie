@@ -4,13 +4,12 @@ from datetime import datetime, timezone
 
 from mirascope import tags
 from mirascope.openai import OpenAICall, OpenAICallParams, OpenAICallResponse
+from mirascope.wandb import WandbCallMixin
 from openai.types.chat import ChatCompletionMessageParam
-
-from ..wandb import WandbCall
 
 
 @tags(["version:0002"])
-class Chat(OpenAICall, WandbCall[OpenAICall, OpenAICallResponse]):
+class Chat(OpenAICall, WandbCallMixin[OpenAICallResponse]):
     """OpenAI LLM call using GPT-3.5-turbo-0125 that implements a single chat call."""
 
     prompt_template = """
