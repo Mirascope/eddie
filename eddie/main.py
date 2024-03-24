@@ -47,7 +47,7 @@ def chat(base_url: Optional[str] = None, dirname: Optional[str] = None):
     )
 
     # Initialize Chat instance
-    chat = Chat()
+    chat = Chat(span_type="llm")
 
     while True:
         user_input = console.input("\n[bold green]Me:[/bold green] ")
