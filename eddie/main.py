@@ -75,9 +75,12 @@ def chat(base_url: Optional[str] = None, dirname: Optional[str] = None):
         #         error = e
         try:
             response, span = chat.call_with_trace()
-            content = response.content
-            console.print(Markdown(content))
-            span.log("eddie_chat_call")
+            if response is not None:
+                content = response.content
+                console.print(Markdown(content))
+                span.log("eddie_chat_call")
+            else:
+                span.log("eddie_chat_error")
         except KeyboardInterrupt:
             interrupted = True
         except Exception as e:

@@ -7,6 +7,9 @@ from mirascope.openai import OpenAICall, OpenAICallParams, OpenAICallResponse
 from mirascope.wandb import WandbCallMixin
 from openai.types.chat import ChatCompletionMessageParam
 
+prev_revision_id = "0002"
+revision_id = "0003"
+
 
 @tags(["version:0003"])
 class Chat(OpenAICall, WandbCallMixin[OpenAICallResponse]):
