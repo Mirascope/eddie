@@ -26,16 +26,17 @@ Eddie currently supports the following commands:
 
 ### Initial Setup
 
-[Needs link to walkthrough and video]
+[Link to blog post and video]
 
 ### Basic Chat
 
-[Needs link to walkthrough and video]
+[Link to blog post and video]
 
 ## Roadmap
 
 If there are any particular features or projects you would be interested in watching us build, let us know! In the meantime, this is what’s on our mind roughly:
 
+- [ ]  Beautiful Textual CLI App (so Eddie looks like an on-board computer)
 - [ ]  RAG with Memory
 - [ ]  Simple Gmail Tool-Use Agent
 - [ ]  Researcher Agent
