@@ -24,10 +24,6 @@ Eddie currently supports the following commands:
 
 ## Walkthroughs
 
-### Initial Setup
-
-[Link to blog post and video]
-
 ### Basic Chat
 
 [Link to blog post and video]
