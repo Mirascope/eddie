@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "eddie-cli"
+name = "eddie"
 version = "0.1.0"
 description = "Eddie — The AI-powered CLI Assistant"
 authors = ["William Bakst <william@mirascope.io>"]
@@ -7,11 +7,16 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.scripts]
-eddie = "eddie_cli.main:app"
+eddie = "src.main:app"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
 typer = "^0.12.3"
+textual = "^0.60.1"
+mirascope = { version = "^0.13.2", extras = ["cli"] }
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.4"
 
 [build-system]
 requires = ["poetry-core"]
