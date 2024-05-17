@@ -1,5 +1,6 @@
 # Misc
-wandb/
+.DS_Store
+textual.textualize.io
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
