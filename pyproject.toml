@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.scripts]
-eddie = "src.main:app"
+eddie = "eddie.main:app"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"

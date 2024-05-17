@@ -6,7 +6,7 @@ from textual.events import Key
 from textual.reactive import reactive
 from textual.widgets import Input, Static
 
-from src.calls import EddieChat
+from eddie.calls import EddieChat
 
 
 class ChatMessage(Static):

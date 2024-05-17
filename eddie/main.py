@@ -4,7 +4,7 @@ import importlib.metadata
 
 import typer
 
-from src.eddie import Eddie
+from eddie.textual import Eddie
 
 app = typer.Typer()
 
