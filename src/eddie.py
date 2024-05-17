@@ -28,7 +28,6 @@ class ChatInput(Input):
         background: #000000;
         color: #00FF00;
         border: round #00FF00;
-        # hover: pointer;
     }
     ChatInput:focus {
         border: round #FFD700;
