@@ -4,35 +4,38 @@ The primary purpose of Eddie is to demonstrate how to build real-world AI-powere
 
 ## Installation
 
-You can install Eddie on your own machine by running:
+Eddie is not yet released. If you want, you can build from source. If you clone the repo, from the root directory you can run:
 
-```bash
-pip install eddie-cli
+```python
+poetry shell
+poetry install
+eddie {command}  # see commands below
 ```
 
-You can check that Eddie has been installed by running `eddie version`.
+If you don't have `poetry` installed you can run `pip install poetry`.
 
 ## Commands
 
-Before running any command, you’ll need to run `ollama run llama3` to spin up your local LLM endpoint for Eddie to query. If you haven’t installed it yet, check out [Ollama](https://ollama.com/) and install it!
+Right now Eddie is powered using OpenAI's `gpt-4o` language model. However, we want everything to run locally and are working on figuring out how to match the function calling capabilities (primarily streaming) in order to support a fully local Eddie.
 
 Eddie currently supports the following commands:
 
 - `eddie version`: outputs the current version of the installed package.
-- `eddie hello {name}`: prompt Eddie and say hello.
 - `eddie chat`: multi-turn chat with Eddie
+- `eddie run`: runs the Textual application for Eddie
 
 ## Walkthroughs
 
-### Basic Chat
+!!! warning
 
-[Link to blog post and video]
+    This section is under construction.
 
 ## Roadmap
 
 If there are any particular features or projects you would be interested in watching us build, let us know! In the meantime, this is what’s on our mind roughly:
 
-- [ ]  Beautiful Textual CLI App (so Eddie looks like an on-board computer)
+- [X]  Beautiful Textual CLI App (so Eddie looks like an on-board computer)
+- [X]  Memories of user for personalization
 - [ ]  RAG with Memory
 - [ ]  Simple Gmail Tool-Use Agent
 - [ ]  Researcher Agent
