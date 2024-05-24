@@ -387,4 +387,4 @@ Note that to properly handle Textual's event loop, we've launched our chat with 
 
 And that's it, now we have a retro AI-powered CLI assistant!
 
-<video src='./images/eddie-textual-app.mp4' width='100%' />
+https://github.com/Mirascope/eddie/assets/99370834/26b58035-d22d-432d-bb89-bffbee49b028
