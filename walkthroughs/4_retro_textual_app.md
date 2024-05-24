@@ -387,4 +387,4 @@ Note that to properly handle Textual's event loop, we've launched our chat with 
 
 And that's it, now we have a retro AI-powered CLI assistant!
 
-![eddie-textual-app](./images/eddie-textual-app.mp4)
+<video src='./images/eddie-textual-app.mp4' width='100%' />
