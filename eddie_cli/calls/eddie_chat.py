@@ -1,8 +1,7 @@
+"""Eddie's chat functionality."""
+
 import datetime
 import json
-
-# from eddie.config import Settings
-# settings = Settings()
 import os
 import pickle as pkl
 import sys
@@ -10,12 +9,10 @@ from pathlib import Path
 from typing import Callable, Generator
 
 from mirascope import tags
-from mirascope.logfire import with_logfire
 from mirascope.openai import (
     OpenAICall,
     OpenAICallParams,
     OpenAICallResponseChunk,
-    OpenAITool,
     OpenAIToolStream,
 )
 from openai.types.chat import ChatCompletionMessageParam
@@ -25,7 +22,7 @@ from typer import get_app_dir
 
 def load_memories() -> list[str]:
     """Loads Eddie's memories."""
-    app_dir = Path(get_app_dir("eddie"))
+    app_dir = Path(get_app_dir("eddie-cli"))
     if not os.path.exists(app_dir):
         os.makedirs(app_dir)
     filepath = app_dir / "memories.pkl"
@@ -36,22 +33,26 @@ def load_memories() -> list[str]:
         return pkl.load(f)
 
 
-def memorize(memory: str) -> str:
-    """Saves the `memory` and returns it.
+def memorize(memory: str) -> list[str]:
+    """Saves the `memory` and returns the list of all memories.
 
     Args:
-        memory: A memory synthesized from a user query. This should just be a single
-            sentence describing what should be memorized. For example, you might
-            want to save something like "User is tall", "User likes baseball", etc.
+        memory: A memory synthesized from a user's input. This should just be a single
+            sentence describing what should be memorized. For example, you might want
+            to save something like "User is tall", "User likes golf", etc.
 
     Returns:
-        The saved `memory`.
+        The list of memories updated with the saved `memory`.
     """
-    return memory
+    memories = load_memories()
+    memories.append(memory)
+    filepath = Path(get_app_dir("eddie-cli")) / "memories.pkl"
+    with filepath.open(mode="wb") as f:
+        pkl.dump(memories, f)
+    return memories
 
 
-@with_logfire
-@tags(["version:0001"])
+@tags(["version:0005"])
 class EddieChat(OpenAICall):
     prompt_template = """
     SYSTEM:
@@ -61,26 +62,33 @@ class EddieChat(OpenAICall):
     The current date and time is {current_date_time}.
     Your replies should be succint and to the point.
     Generally no longer than one or two sentences unless necessary to answer properly.
-
+    
     You have access to a `Memorize` tool. You can call this tool to save memories.
     When you identify something worth saving, use the `Memorize` tool if you haven't already memorized it.
 
-    When using the `Memorize` tool, you should output ONLY the 
-
     You have access to the following saved memories from the user:
     {memories}
+
+    You first message to the user is the following:
+    "{first_message}"
     
     MESSAGES:
     {history}
     
     USER:
-    {query}
+    {user_input}
     """
 
-    query: str = ""
-    memories: list[str] = Field(default_factory=load_memories)
+    call_params = OpenAICallParams(tools=[memorize])
+
+    user_input: str = ""
     history: list[ChatCompletionMessageParam] = []
-    call_params = OpenAICallParams(model="gpt-4o", tools=[memorize])
+    memories: list[str] = Field(default_factory=load_memories)
+
+    @property
+    def first_message(self) -> str:
+        """Eddie's first message to the user when booted up."""
+        return "Oh, look who it is. In need of some assistance then?"
 
     @property
     def current_date_time(self) -> str:
@@ -92,30 +100,13 @@ class EddieChat(OpenAICall):
         """Returns information about the current system."""
         return sys.platform
 
-    def add_memory(self, memory: str) -> None:
-        """Saves `memory` to Eddie's memory."""
-        self.memories.append(memory)
-        filepath = Path(get_app_dir("eddie")) / "memories.pkl"
-        with filepath.open(mode="wb") as f:
-            pkl.dump(self.memories, f)
-
-    def delete_memory(self, index: int) -> None:
-        del self.memories[index]
-        filepath = Path(get_app_dir("eddie")) / "memories.pkl"
-        with filepath.open(mode="wb") as f:
-            pkl.dump(self.memories, f)
-
-    async def chat_async(
-        self, user_query: str, handle_chunk_content: Callable[[str], None]
-    ):
-        return self.chat(user_query, handle_chunk_content)
-
     def chat(
         self,
-        user_query: str,
+        user_input: str,
         handle_chunk_content: Callable[[str], None],
-    ) -> str:
-        """Returns the content from an iteration of a chat turn."""
+        handle_memory: Callable[[str], None],
+    ) -> None:
+        """A single chat turn with Eddie."""
 
         def regenerate(
             chunk: OpenAICallResponseChunk,
@@ -125,25 +116,24 @@ class EddieChat(OpenAICall):
             for chunk in astream:
                 yield chunk
 
-        self.query = user_query
-        self.history += [{"role": "user", "content": user_query}]
-
+        self.user_input = user_input
         stream = self.stream()
-        first_chunk: OpenAICallResponseChunk = next(stream)
+        first_chunk = next(stream)
         generator = regenerate(first_chunk, stream)
-        if first_chunk.delta.content is None:
+        if first_chunk.delta and first_chunk.delta.content is None:
             tool_stream = OpenAIToolStream.from_stream(generator)
-            tools: list[OpenAITool] = []
-            tool_messages = []
+            tools, tool_messages, new_memories = [], [], []
             for tool in tool_stream:
-                if tool and tool.__class__.__name__ == "Memorize":
+                if tool:
                     tools.append(tool)
-                    memory = tool.fn(**tool.args)
-                    self.add_memory(memory)
+                    self.memories = tool.fn(**tool.args)
+                    handle_memory(self.memories[-1])
+                    new_memories.append(self.memories[-1])
+                    # this needs a convenience wrapper in Mirascope...
                     tool_messages += [
                         {
                             "role": "tool",
-                            "content": memory,
+                            "content": new_memories[-1],
                             "tool_call_id": tool.tool_call.id,
                             "name": tool.__class__.__name__,
                         }
@@ -165,14 +155,15 @@ class EddieChat(OpenAICall):
                     ],
                 }
             ] + tool_messages
-            content = self.chat("", handle_chunk_content)
+            self.chat("", handle_chunk_content, handle_memory)
         else:
             content = ""
             for chunk in generator:
                 handle_chunk_content(chunk.content)
                 content += chunk.content
-            self.history += [{"role": "assistant", "content": content}]
-
-        # try not to hit context limit in exchange for short term memory loss
-        self.history = self.history[-30:]
-        return content
+            self.history += [
+                {"role": "user", "content": user_input},
+                {"role": "assistant", "content": content},
+            ]
+            # protect context limit == short-term memory loss
+            self.history = self.history[-30:]

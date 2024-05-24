@@ -1,24 +1,22 @@
 [tool.poetry]
-name = "eddie"
+name = "eddie-cli"
 version = "0.1.0"
-description = "Eddie — The AI-powered CLI Assistant"
+description = "Eddie -- the retro AI-powered CLI assistant"
 authors = ["William Bakst <william@mirascope.io>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.scripts]
-eddie = "eddie.main:cli"
+eddie = "eddie_cli.main:cli"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.9,<4.0"
 typer = "^0.12.3"
-textual = "^0.60.1"
-mirascope = { version = "^0.13.5", extras = ["cli"] }
-pydantic-settings = "^2.2.1"
+mirascope = {extras = ["cli"], version = "^0.14.1"}
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.4.4"
-textual-dev = "^1.5.1"
+ruff = "^0.4.5"
+mypy = "^1.10.0"
 
 [build-system]
 requires = ["poetry-core"]
