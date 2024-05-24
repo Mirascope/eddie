@@ -2,7 +2,7 @@
 
 The key goal of Eddie is to serve as an educational resource for how to build real-world AI-powered applications using [Mirascope](https://github.com/Mirascope/mirascope).
 
-![eddie-textual-app](./images/eddie-textual-app.gif)
+![eddie-textual-app](./walkthroughs/images/eddie-textual-app.mp4)
 
 As we implement new features, we'll release detailed written walkthroughs to give you an inside look at the development process. By following along, you'll learn practical techniques and best practices for building your own AI-powered applications.
 
