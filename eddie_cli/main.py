@@ -4,6 +4,7 @@ from pathlib import Path
 
 import typer
 
+from .app import EddieApp
 from .calls import EddieChat
 
 cli = typer.Typer()
@@ -42,6 +43,13 @@ def chat():
             lambda x: print(f"(ADDED MEMORY: {x})"),
         )
         print("\n", end="")
+
+
+@cli.command()
+def run(dev: bool = False):
+    """Run Eddie's retro Textual app."""
+    eddie = EddieApp(watch_css=dev)
+    eddie.run()
 
 
 if __name__ == "__main__":

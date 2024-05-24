@@ -2,7 +2,7 @@
 
 The key goal of Eddie is to serve as an educational resource for how to build real-world AI-powered applications using [Mirascope](https://github.com/Mirascope/mirascope).
 
-[INSERT EMBEDDED VIDEO HERE]
+![eddie-textual-app](./images/eddie-textual-app.gif)
 
 As we implement new features, we'll release detailed written walkthroughs to give you an inside look at the development process. By following along, you'll learn practical techniques and best practices for building your own AI-powered applications.
 
@@ -53,7 +53,7 @@ Eddie currently supports the following commands:
 - `eddie clear-memories`: clears Eddie's current memories of user information
 
 > [!NOTE]
-> The default model is `gpt-4o`. You can further specify the model using the `--model` flag (e.g. `--model gpt-3.5-turbo`).
+> The default model is `gpt-4o`.
 
 ## Walkthroughs
 
@@ -63,9 +63,9 @@ You can find the written walkthroughs in the [`walkthroughs`](./walkthroughs/) d
 
 If there are any particular features or projects you would be interested in watching us build, let us know! In the meantime, this is what’s on our mind roughly:
 
-- [X]  Retro Textual CLI App (so Eddie looks like an on-board computer)
 - [X]  Basic chat with streaming
 - [X]  Memories of user for personalization using tools
+- [X]  Retro Textual CLI App (so Eddie looks like an on-board computer)
 - [ ]  Match tool streaming functionality using local open-source LLM
 - [ ]  RAG with Memory
 - [ ]  Simple Gmail Tool-Use Agent

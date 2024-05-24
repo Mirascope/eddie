@@ -13,10 +13,13 @@ eddie = "eddie_cli.main:cli"
 python = ">=3.9,<4.0"
 typer = "^0.12.3"
 mirascope = {extras = ["cli"], version = "^0.14.1"}
+textual = "^0.63.2"
+asyncer = "^0.0.7"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.5"
 mypy = "^1.10.0"
+textual-dev = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core"]

@@ -259,6 +259,7 @@ class EddieChat(OpenAICall):
                             "name": tool.__class__.__name__,
                         }
                     ]
+            # this needs a convenience wrapper in Mirascope...
             self.history += [
                 {
                     "content": None,

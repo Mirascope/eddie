@@ -1,0 +1,73 @@
+Screen {
+    border: round #00FF00;
+    color: #00FF00;
+    background: #000000;
+    padding: 0 1;
+}
+
+#topbar {
+    layout: grid;
+    grid-size: 2;
+    padding: 0 1;
+    border: round #00FF00;
+    content-align: left middle;
+    min-height: 3;
+    max-height: 3;
+}
+
+.topbar-left {
+    content-align: left middle;
+}
+
+.topbar-right {
+    content-align: right middle;
+}
+
+#memories-chat {
+    layout: horizontal;
+}
+
+MemoriesContainer {
+    width: 1fr;
+    color: #00FF00;
+    border: round #00FF00;
+    padding: 0 1;
+    margin: 0 1 0 0;
+}
+
+.memory {
+    margin: 1 0 0 0;
+}
+
+ChatContainer {
+    width: 3fr;
+}
+
+ChatMessages {
+    background: #000000;
+    border: round #00FF00;
+    padding: 0 1;
+    scrollbar-color: gold;
+    scrollbar-size-vertical: 1;
+}
+
+.chat-message {
+    background: #000000;
+    color: #00FF00;
+    margin: 1 0 0 0;
+}
+
+ChatInput {
+    dock: bottom;
+    width: 100%;
+    min-height: 3;
+    background: #000000;
+    color: #00FF00;
+    border: round #00FF00;
+    padding: 0 1;
+}
+
+ChatInput:focus {
+    border: round #FFD700;
+    padding: 0 1;
+}
